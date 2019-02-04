@@ -79,14 +79,19 @@ public class Tab4Fragment extends Fragment {
             @Override
             public void onClick(View v){
                 Toast.makeText(getActivity(), "guessImageButton", Toast.LENGTH_LONG).show();
+                float[] pixelBuffer = convertImageToFloatArray();
+                float[] results = performInference(pixelBuffer);
+                displayResults(results);
             }
         });
 
-        
+
 
         //https://stackoverflow.com/questions/47429389/i-cant-use-getassets-method-without-mainactivity?noredirect=1&lq=1
         //inferenceInterface = new TensorFlowInferenceInterface(getActivity().getAssets(), MODEL_FILE);
-        InitSession();
+//        InitSession();
+        inferenceInterface = new TensorFlowInferenceInterface();
+        inferenceInterface.initializeTensorFlow(getActivity().getAssets(),MODEL_FILE);
 
         // Inflate the layout for this fragment
         //https://www.youtube.com/watch?v=fF8f3BDDudo     How to Use findViewById in Fragment in Android - Navigation Drawer
@@ -100,6 +105,44 @@ public class Tab4Fragment extends Fragment {
         return inferenceInterface;
     }
 
+    private float[] convertImageToFloatArray(){
+        int[] intArray = new int[1024];
+        displayImageBitmap.getPixels(intArray, 0, 28, 0, 0, 32, 32);
+        float[] floatArray = new float[3072];
+        for(int i = 0; i<1024; i++){
+            floatArray[i] = ((intArray[i] >> 16) & 0xff) / 255.0f;
+            floatArray[i+1] = ((intArray[i] >> 8) & 0xff) / 255.0f;
+            floatArray[i+2] = (intArray[i] & 0xff) / 255.0f;
+        }
+        return floatArray;
+    }
+
+    private float[] performInference(float[] pixelBuffer){
+
+//        /// play with, can delete
+//        AssetManager assetManager = getActivity().getAssets();
+//        inferenceInterface = new TensorFlowInferenceInterface(assetManager, MODEL_FILE);
+//        inferenceInterface = new TensorFlowInferenceInterface();
+//        inferenceInterface.initializeTensorFlow(getActivity().getAssets(),MODEL_FILE);
+//        InitSession();
+//        ///
+
+        inferenceInterface.feed(INPUT_NODE, pixelBuffer, INPUT_SHAPE);
+        inferenceInterface.run(new String[] {OUTPUT_NODE});
+        float[] results = new float[2];
+        inferenceInterface.fetch(OUTPUT_NODE, results);
+        return results;
+    }
+
+    private void displayResults(float[] results){
+        if(results[0] > results[1]){
+            textView.setText("Model predicts: Bed bug");
+        } else if(results[0] < results[1]){
+            textView.setText("Model predicts: Cockroach");
+        } else{
+            textView.setText("Model predicts: Neither");
+        }
+    }
 
 
 }
