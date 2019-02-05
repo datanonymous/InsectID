@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.Context;
 import android.widget.Toast;
-
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 
 public class IdentificationActivity extends AppCompatActivity  {
@@ -29,7 +28,7 @@ public class IdentificationActivity extends AppCompatActivity  {
     private static final String INPUT_NODE = "reshape_1_input";
     private static final long[] INPUT_SHAPE = {1,3072};
     private static final String OUTPUT_NODE = "dense_2/Softmax";
-    public TensorFlowInferenceInterface inferenceInterface; //this is private in udemy code
+    TensorFlowInferenceInterface inferenceInterface; //this is private in udemy code
 
     int imageIDsIndex = 9;
     int[] imageIDs = {
@@ -47,16 +46,14 @@ public class IdentificationActivity extends AppCompatActivity  {
     Bitmap displayImageBitmap;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.identification);
 
         imageView = findViewById(R.id.image_view);
         textView = findViewById(R.id.results_text_view);
 
-
-        //udemy code
-        //inferenceInterface = new TensorFlowInferenceInterface(getAssets(), MODEL_FILE);
+        inferenceInterface = new TensorFlowInferenceInterface(getAssets(), MODEL_FILE);
 
 
         //Cannot call buttons any other way in fragment class; must use onClickListeners
@@ -77,16 +74,15 @@ public class IdentificationActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v){
                 float[] pixelBuffer = convertImageToFloatArray();
-//                float[] results = performInference(pixelBuffer);
-//                displayResults(results);
+                float[] results = performInference(pixelBuffer);
+                displayResults(results);
             }
         });
 
 
 
         //https://stackoverflow.com/questions/47429389/i-cant-use-getassets-method-without-mainactivity?noredirect=1&lq=1
-//        inferenceInterface = new TensorFlowInferenceInterface(getAssets(), MODEL_FILE);
-        InitSession();
+        //inferenceInterface = new TensorFlowInferenceInterface(getAssets(), MODEL_FILE);
 
 
 
@@ -95,16 +91,11 @@ public class IdentificationActivity extends AppCompatActivity  {
         //return view;
     }//end onCreate
 
-    TensorFlowInferenceInterface InitSession(){
-        //https://www.programcreek.com/java-api-examples/?class=org.tensorflow.contrib.android.TensorFlowInferenceInterface&method=initializeTensorFlow
-        inferenceInterface = new TensorFlowInferenceInterface();
-        inferenceInterface.initializeTensorFlow(getAssets(),MODEL_FILE);
-        return inferenceInterface;
-    }
+
 
     private float[] convertImageToFloatArray(){
         int[] intArray = new int[1024];
-        displayImageBitmap.getPixels(intArray, 0, 28, 0, 0, 32, 32);
+        displayImageBitmap.getPixels(intArray, 0, 32, 0, 0, 32, 32);
         float[] floatArray = new float[3072];
         for(int i = 0; i<1024; i++){
             floatArray[i] = ((intArray[i] >> 16) & 0xff) / 255.0f;
@@ -114,22 +105,22 @@ public class IdentificationActivity extends AppCompatActivity  {
         return floatArray;
     }
 
-//    public float[] performInference(float[] pixelBuffer){
-//
-////        /// play with, can delete
-////        AssetManager assetManager = getActivity().getAssets();
-////        inferenceInterface = new TensorFlowInferenceInterface(assetManager, MODEL_FILE);
-////        inferenceInterface = new TensorFlowInferenceInterface();
-////        inferenceInterface.initializeTensorFlow(getActivity().getAssets(),MODEL_FILE);
-////        InitSession();
-////        ///
-//
-//        inferenceInterface.feed(INPUT_NODE, pixelBuffer, INPUT_SHAPE);
-//        inferenceInterface.run(new String[] {OUTPUT_NODE});
-//        float[] results = new float[2];
-//        inferenceInterface.fetch(OUTPUT_NODE, results);
-//        return results;
-//    }
+    public float[] performInference(float[] pixelBuffer){
+
+//        /// play with, can delete
+//        AssetManager assetManager = getActivity().getAssets();
+//        inferenceInterface = new TensorFlowInferenceInterface(assetManager, MODEL_FILE);
+//        inferenceInterface = new TensorFlowInferenceInterface();
+//        inferenceInterface.initializeTensorFlow(getActivity().getAssets(),MODEL_FILE);
+//        InitSession();
+//        ///
+
+        inferenceInterface.feed(INPUT_NODE, pixelBuffer, INPUT_SHAPE);
+        inferenceInterface.run(new String[] {OUTPUT_NODE});
+        float[] results = new float[2];
+        inferenceInterface.fetch(OUTPUT_NODE, results);
+        return results;
+    }
 
     private void displayResults(float[] results){
         if(results[0] > results[1]){
@@ -143,4 +134,3 @@ public class IdentificationActivity extends AppCompatActivity  {
 
 
 }
-

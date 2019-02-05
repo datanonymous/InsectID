@@ -29,7 +29,7 @@ public class Tab4Fragment extends Fragment {
     private static final String INPUT_NODE = "reshape_1_input";
     private static final long[] INPUT_SHAPE = {1,3072};
     private static final String OUTPUT_NODE = "dense_2/Softmax";
-    public TensorFlowInferenceInterface inferenceInterface; //this is private in udemy code
+    TensorFlowInferenceInterface inferenceInterface; //this is private in udemy code
 
     int imageIDsIndex = 9;
     int[] imageIDs = {
@@ -56,13 +56,10 @@ public class Tab4Fragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_tab4, container, false);
 
-
         imageView = view.findViewById(R.id.image_view);
         textView = view.findViewById(R.id.results_text_view);
 
-
-        //udemy code
-//        inferenceInterface = new TensorFlowInferenceInterface(getActivity().getAssets(), MODEL_FILE);
+        inferenceInterface = new TensorFlowInferenceInterface(getActivity().getAssets(), MODEL_FILE);
 
 
         //Cannot call buttons any other way in fragment class; must use onClickListeners
@@ -72,9 +69,8 @@ public class Tab4Fragment extends Fragment {
         nextImageButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Toast.makeText(getActivity(), "nextImageButton", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "nextImageButton", Toast.LENGTH_SHORT).show();
                 //https://stackoverflow.com/questions/43364776/java-lang-illegalstateexception-could-not-find-method-in-a-parent-or-ancestor-c?rq=1
-                Toast.makeText(getActivity(), "String", Toast.LENGTH_LONG).show();
                 imageIDsIndex = (imageIDsIndex >= 9)?0:imageIDsIndex+1;
                 Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), imageIDs[imageIDsIndex]);
                 displayImageBitmap = Bitmap.createScaledBitmap(imageBitmap, 32, 32, true);
@@ -84,18 +80,28 @@ public class Tab4Fragment extends Fragment {
         guessImageButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Toast.makeText(getActivity(), "guessImageButton", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "guessImageButton", Toast.LENGTH_SHORT).show();
                 float[] pixelBuffer = convertImageToFloatArray();
-//                float[] results = performInference(pixelBuffer);
-//                displayResults(results);
+                float[] results = performInference(pixelBuffer);
+                displayResults(textView, results);
+//                Toast.makeText(getActivity(), "Bed bug: "+results[0]+"\n"+"Cockroach: "+results[1], Toast.LENGTH_SHORT).show();
+//                //https://stackoverflow.com/questions/13303469/edittext-settext-not-working-with-fragment
+//                if(results[0] > results[1]){
+//                    textView.setText("Model predicts: Bed bug");
+//                } else if(results[0] < results[1]){
+//                    textView.setText("Model predicts: Cockroach");
+//                } else{
+//                    textView.setText("Model predicts: Neither");
+//                }
+
             }
         });
 
 
 
         //https://stackoverflow.com/questions/47429389/i-cant-use-getassets-method-without-mainactivity?noredirect=1&lq=1
-        //inferenceInterface = new TensorFlowInferenceInterface(getActivity().getAssets(), MODEL_FILE);
-        InitSession();
+//        inferenceInterface = new TensorFlowInferenceInterface(getActivity().getAssets(), MODEL_FILE);
+        //InitSession();
 
 
 
@@ -104,16 +110,16 @@ public class Tab4Fragment extends Fragment {
         return view;
     }//end onCreate
 
-    TensorFlowInferenceInterface InitSession(){
-        //https://www.programcreek.com/java-api-examples/?class=org.tensorflow.contrib.android.TensorFlowInferenceInterface&method=initializeTensorFlow
-        inferenceInterface = new TensorFlowInferenceInterface();
-        inferenceInterface.initializeTensorFlow(getActivity().getAssets(),MODEL_FILE);
-        return inferenceInterface;
-    }
+//    TensorFlowInferenceInterface InitSession(){
+//        //https://www.programcreek.com/java-api-examples/?class=org.tensorflow.contrib.android.TensorFlowInferenceInterface&method=initializeTensorFlow
+//        inferenceInterface = new TensorFlowInferenceInterface();
+//        inferenceInterface.initializeTensorFlow(getActivity().getAssets(),MODEL_FILE);
+//        return inferenceInterface;
+//    }
 
     private float[] convertImageToFloatArray(){
         int[] intArray = new int[1024];
-        displayImageBitmap.getPixels(intArray, 0, 28, 0, 0, 32, 32);
+        displayImageBitmap.getPixels(intArray, 0, 32, 0, 0, 32, 32);
         float[] floatArray = new float[3072];
         for(int i = 0; i<1024; i++){
             floatArray[i] = ((intArray[i] >> 16) & 0xff) / 255.0f;
@@ -123,24 +129,26 @@ public class Tab4Fragment extends Fragment {
         return floatArray;
     }
 
-//    public float[] performInference(float[] pixelBuffer){
-//
-////        /// play with, can delete
-////        AssetManager assetManager = getActivity().getAssets();
-////        inferenceInterface = new TensorFlowInferenceInterface(assetManager, MODEL_FILE);
-////        inferenceInterface = new TensorFlowInferenceInterface();
-////        inferenceInterface.initializeTensorFlow(getActivity().getAssets(),MODEL_FILE);
-////        InitSession();
-////        ///
-//
-//        inferenceInterface.feed(INPUT_NODE, pixelBuffer, INPUT_SHAPE);
-//        inferenceInterface.run(new String[] {OUTPUT_NODE});
-//        float[] results = new float[2];
-//        inferenceInterface.fetch(OUTPUT_NODE, results);
-//        return results;
-//    }
+    public float[] performInference(float[] pixelBuffer){
 
-    private void displayResults(float[] results){
+//        /// play with, can delete
+//        AssetManager assetManager = getActivity().getAssets();
+//        inferenceInterface = new TensorFlowInferenceInterface(assetManager, MODEL_FILE);
+//        inferenceInterface = new TensorFlowInferenceInterface();
+//        inferenceInterface.initializeTensorFlow(getActivity().getAssets(),MODEL_FILE);
+//        InitSession();
+//        ///
+
+        inferenceInterface.feed(INPUT_NODE, pixelBuffer, INPUT_SHAPE);
+        inferenceInterface.run(new String[] {OUTPUT_NODE});
+        float[] results = new float[2];
+        inferenceInterface.fetch(OUTPUT_NODE, results);
+        return results;
+    }
+
+    private void displayResults(TextView textView, float[] results){
+        Toast.makeText(getActivity(), "Bed bug: "+results[0]+"\n"+"Cockroach: "+results[1], Toast.LENGTH_SHORT).show();
+        //https://stackoverflow.com/questions/13303469/edittext-settext-not-working-with-fragment
         if(results[0] > results[1]){
             textView.setText("Model predicts: Bed bug");
         } else if(results[0] < results[1]){
@@ -149,6 +157,7 @@ public class Tab4Fragment extends Fragment {
             textView.setText("Model predicts: Neither");
         }
     }
+
 
 
 }

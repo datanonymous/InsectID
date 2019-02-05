@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intentID = new Intent(getApplicationContext(), IdentificationActivity.class);
             startActivity(intentID);
         }
-
         return super.onOptionsItemSelected(item);
     }
 
