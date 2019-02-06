@@ -1,20 +1,19 @@
 package ko.alex.insectid;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.content.Context;
 import android.widget.Toast;
 
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
+import org.w3c.dom.Text;
 
 public class Tab4Fragment extends Fragment {
 
@@ -51,13 +50,16 @@ public class Tab4Fragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_tab4, container, false);
+        //https://www.bignerdranch.com/blog/understanding-androids-layoutinflater-inflate/
+        View view = inflater.inflate(R.layout.fragment_tab4, container, false); //https://stackoverflow.com/questions/17076663/problems-with-settext-in-a-fragment-in-oncreateview
 
         imageView = view.findViewById(R.id.image_view);
         textView = view.findViewById(R.id.results_text_view);
+
+        //https://www.i-programmer.info/programming/android/6882-introducing-android-fragments.html?start=2
+        textView.setText("Bed bug probability: \nCockroach probability:");
 
         inferenceInterface = new TensorFlowInferenceInterface(getActivity().getAssets(), MODEL_FILE);
 
@@ -69,7 +71,7 @@ public class Tab4Fragment extends Fragment {
         nextImageButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Toast.makeText(getActivity(), "nextImageButton", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "nextImageButton", Toast.LENGTH_SHORT).show();
                 //https://stackoverflow.com/questions/43364776/java-lang-illegalstateexception-could-not-find-method-in-a-parent-or-ancestor-c?rq=1
                 imageIDsIndex = (imageIDsIndex >= 9)?0:imageIDsIndex+1;
                 Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), imageIDs[imageIDsIndex]);
@@ -80,20 +82,10 @@ public class Tab4Fragment extends Fragment {
         guessImageButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Toast.makeText(getActivity(), "guessImageButton", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "guessImageButton", Toast.LENGTH_SHORT).show();
                 float[] pixelBuffer = convertImageToFloatArray();
                 float[] results = performInference(pixelBuffer);
-                displayResults(textView, results);
-//                Toast.makeText(getActivity(), "Bed bug: "+results[0]+"\n"+"Cockroach: "+results[1], Toast.LENGTH_SHORT).show();
-//                //https://stackoverflow.com/questions/13303469/edittext-settext-not-working-with-fragment
-//                if(results[0] > results[1]){
-//                    textView.setText("Model predicts: Bed bug");
-//                } else if(results[0] < results[1]){
-//                    textView.setText("Model predicts: Cockroach");
-//                } else{
-//                    textView.setText("Model predicts: Neither");
-//                }
-
+                displayResults(results);
             }
         });
 
@@ -146,15 +138,15 @@ public class Tab4Fragment extends Fragment {
         return results;
     }
 
-    private void displayResults(TextView textView, float[] results){
-        Toast.makeText(getActivity(), "Bed bug: "+results[0]+"\n"+"Cockroach: "+results[1], Toast.LENGTH_SHORT).show();
+    public void displayResults(float[] results){
+        //Toast.makeText(getActivity(), "Bed bug: "+results[0]+"\n"+"Cockroach: "+results[1], Toast.LENGTH_SHORT).show();
         //https://stackoverflow.com/questions/13303469/edittext-settext-not-working-with-fragment
         if(results[0] > results[1]){
-            textView.setText("Model predicts: Bed bug");
+            textView.setText("Bed bug probability: "+results[0]+"\nCockroach probability: "+results[1]+"\nModel predicts: Bed bug");
         } else if(results[0] < results[1]){
-            textView.setText("Model predicts: Cockroach");
+            textView.setText("Bed bug probability: "+results[0]+"\nCockroach probability: "+results[1]+"\nModel predicts: Cockroach");
         } else{
-            textView.setText("Model predicts: Neither");
+            textView.setText("Bed bug probability: "+results[0]+"\nCockroach probability: "+results[1]+"\nModel predicts: Neither");
         }
     }
 

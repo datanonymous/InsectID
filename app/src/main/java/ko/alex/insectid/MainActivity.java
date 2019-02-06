@@ -42,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupTabIcons() {
-        tabLayout.getTabAt(0).setIcon(R.drawable.mouse);
-        tabLayout.getTabAt(1).setIcon(R.drawable.spray);
-        tabLayout.getTabAt(2).setIcon(R.drawable.dpestcontrol);
+        tabLayout.getTabAt(0).setIcon(R.drawable.whiterat);
+        tabLayout.getTabAt(1).setIcon(R.drawable.whitepco);
+        tabLayout.getTabAt(2).setIcon(R.drawable.whitecomment);
         tabLayout.getTabAt(3).setIcon(R.drawable.microscope);
     }
 

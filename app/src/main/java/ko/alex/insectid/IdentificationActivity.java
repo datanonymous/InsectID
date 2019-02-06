@@ -1,18 +1,13 @@
 package ko.alex.insectid;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.content.Context;
-import android.widget.Toast;
+
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 
 public class IdentificationActivity extends AppCompatActivity  {
@@ -52,6 +47,9 @@ public class IdentificationActivity extends AppCompatActivity  {
 
         imageView = findViewById(R.id.image_view);
         textView = findViewById(R.id.results_text_view);
+
+        //https://www.i-programmer.info/programming/android/6882-introducing-android-fragments.html?start=2
+        textView.setText("Bed bug probability: \nCockroach probability:");
 
         inferenceInterface = new TensorFlowInferenceInterface(getAssets(), MODEL_FILE);
 
@@ -122,13 +120,15 @@ public class IdentificationActivity extends AppCompatActivity  {
         return results;
     }
 
-    private void displayResults(float[] results){
+    public void displayResults(float[] results){
+        //Toast.makeText(getActivity(), "Bed bug: "+results[0]+"\n"+"Cockroach: "+results[1], Toast.LENGTH_SHORT).show();
+        //https://stackoverflow.com/questions/13303469/edittext-settext-not-working-with-fragment
         if(results[0] > results[1]){
-            textView.setText("Model predicts: Bed bug");
+            textView.setText("Bed bug probability: "+results[0]+"\nCockroach probability: "+results[1]+"\nModel predicts: Bed bug");
         } else if(results[0] < results[1]){
-            textView.setText("Model predicts: Cockroach");
+            textView.setText("Bed bug probability: "+results[0]+"\nCockroach probability: "+results[1]+"\nModel predicts: Cockroach");
         } else{
-            textView.setText("Model predicts: Neither");
+            textView.setText("Bed bug probability: "+results[0]+"\nCockroach probability: "+results[1]+"\nModel predicts: Neither");
         }
     }
 
