@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kyanogen.signatureview.SignatureView;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,9 +45,12 @@ public class Tab3Fragment extends Fragment {
 
         FloatingActionButton fabSignature = view.findViewById(R.id.fabSignature);
         FloatingActionButton fabPDF = view.findViewById(R.id.fabPDF);
+        SignatureView signatureView = view.findViewById(R.id.signature_view);
         fabSignature.setOnClickListener((View v) ->{
             //https://stackoverflow.com/questions/30752547/listener-can-be-replaced-with-lambda
-            Toast.makeText(getActivity(), "Signature button pressed", Toast.LENGTH_SHORT).show();
+            //https://github.com/zahid-ali-shah/SignatureView
+            signatureView.clearCanvas();
+            Toast.makeText(getActivity(), "Clear signature button pressed", Toast.LENGTH_SHORT).show();
         });
         fabPDF.setOnClickListener((View v) ->{
             //https://stackoverflow.com/questions/30752547/listener-can-be-replaced-with-lambda

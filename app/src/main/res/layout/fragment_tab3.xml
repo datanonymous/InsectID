@@ -9,7 +9,7 @@
     <EditText
         android:id="@+id/serviceCommentID"
         android:layout_width="400dp"
-        android:layout_height="343dp"
+        android:layout_height="304dp"
         android:layout_margin="8dp"
         android:background="@color/common_google_signin_btn_text_dark_default"
         android:cursorVisible="true"
@@ -72,8 +72,8 @@
 
     <com.kyanogen.signatureview.SignatureView xmlns:sign="http://schemas.android.com/apk/res-auto"
         android:id="@+id/signature_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="395dp"
+        android:layout_height="232dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -82,15 +82,14 @@
         sign:enableSignature="true"
         sign:layout_constraintBottom_toBottomOf="parent"
         sign:layout_constraintEnd_toEndOf="parent"
-        sign:layout_constraintHorizontal_bias="0.666"
+        sign:layout_constraintHorizontal_bias="1.0"
         sign:layout_constraintStart_toStartOf="parent"
-        sign:layout_constraintTop_toBottomOf="@+id/fabSignature"
+        sign:layout_constraintTop_toBottomOf="@+id/fabPDF"
         sign:layout_constraintVertical_bias="0.0"
         sign:penColor="#000000"
         sign:penSize="5dp" />
 
     <TextView
-        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
