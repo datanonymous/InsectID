@@ -2,11 +2,13 @@ package ko.alex.insectid;
 
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -38,6 +40,17 @@ public class Tab3Fragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM/dd/yyyy");
         String date = sdf.format(new Date());
         serviceCommentID.setText("Current date is: " + date + "\nService Comment:\n"); //serviceCommentID.setHint("Current date is: " + date);
+
+        FloatingActionButton fabSignature = view.findViewById(R.id.fabSignature);
+        FloatingActionButton fabPDF = view.findViewById(R.id.fabPDF);
+        fabSignature.setOnClickListener((View v) ->{
+                //https://stackoverflow.com/questions/30752547/listener-can-be-replaced-with-lambda
+                Toast.makeText(getActivity(), "Signature button pressed", Toast.LENGTH_SHORT).show();
+        });
+        fabPDF.setOnClickListener((View v) ->{
+            //https://stackoverflow.com/questions/30752547/listener-can-be-replaced-with-lambda
+            Toast.makeText(getActivity(), "PDF button pressed", Toast.LENGTH_SHORT).show();
+        });
 
         return view;
     }
