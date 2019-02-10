@@ -44,8 +44,8 @@ public class Tab3Fragment extends Fragment {
         FloatingActionButton fabSignature = view.findViewById(R.id.fabSignature);
         FloatingActionButton fabPDF = view.findViewById(R.id.fabPDF);
         fabSignature.setOnClickListener((View v) ->{
-                //https://stackoverflow.com/questions/30752547/listener-can-be-replaced-with-lambda
-                Toast.makeText(getActivity(), "Signature button pressed", Toast.LENGTH_SHORT).show();
+            //https://stackoverflow.com/questions/30752547/listener-can-be-replaced-with-lambda
+            Toast.makeText(getActivity(), "Signature button pressed", Toast.LENGTH_SHORT).show();
         });
         fabPDF.setOnClickListener((View v) ->{
             //https://stackoverflow.com/questions/30752547/listener-can-be-replaced-with-lambda
