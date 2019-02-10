@@ -22,7 +22,7 @@ import java.util.Date;
  */
 public class Tab3Fragment extends Fragment {
 
-    TextView serviceCommentID;
+
 
     public Tab3Fragment() {
         // Required empty public constructor
@@ -35,17 +35,17 @@ public class Tab3Fragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tab3, container, false);
 
-        //
-        //
-        //
         TextView serviceCommentID = view.findViewById(R.id.serviceCommentID);
+
         SimpleDateFormat sdf = new SimpleDateFormat("MMM/dd/yyyy");
         String date = sdf.format(new Date());
         serviceCommentID.setText("Current date is: " + date + "\nService Comment:\n"); //serviceCommentID.setHint("Current date is: " + date);
 
         FloatingActionButton fabSignature = view.findViewById(R.id.fabSignature);
         FloatingActionButton fabPDF = view.findViewById(R.id.fabPDF);
+        FloatingActionButton fabSaveComment = view.findViewById(R.id.fabSaveComment);
         SignatureView signatureView = view.findViewById(R.id.signature_view);
+
         fabSignature.setOnClickListener((View v) ->{
             //https://stackoverflow.com/questions/30752547/listener-can-be-replaced-with-lambda
             //https://github.com/zahid-ali-shah/SignatureView
@@ -55,6 +55,11 @@ public class Tab3Fragment extends Fragment {
         fabPDF.setOnClickListener((View v) ->{
             //https://stackoverflow.com/questions/30752547/listener-can-be-replaced-with-lambda
             Toast.makeText(getActivity(), "PDF button pressed", Toast.LENGTH_SHORT).show();
+        });
+        fabSaveComment.setOnClickListener((View v) ->{
+            //https://stackoverflow.com/questions/30752547/listener-can-be-replaced-with-lambda
+            String serviceComment = serviceCommentID.getText().toString();
+            Toast.makeText(getActivity(), "Saved comment: \n" + serviceComment, Toast.LENGTH_SHORT).show();
         });
 
         return view;
