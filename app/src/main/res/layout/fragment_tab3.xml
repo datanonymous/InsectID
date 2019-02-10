@@ -4,7 +4,7 @@
     android:layout_height="match_parent" tools:context="ko.alex.insectid.Tab1Fragment">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/serviceCommentID"
         android:layout_width="388dp"
         android:layout_height="486dp"
         android:layout_marginStart="8dp"
