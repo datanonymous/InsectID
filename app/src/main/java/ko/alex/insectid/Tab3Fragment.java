@@ -36,6 +36,8 @@ public class Tab3Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tab3, container, false);
 
         TextView serviceCommentID = view.findViewById(R.id.serviceCommentID);
+        TextView clientSignatureID = view.findViewById(R.id.clientSignatureID);
+        clientSignatureID.setText("No client entered.");
 
         SimpleDateFormat sdf = new SimpleDateFormat("MMM/dd/yyyy");
         String date = sdf.format(new Date());
@@ -59,7 +61,8 @@ public class Tab3Fragment extends Fragment {
         fabSaveComment.setOnClickListener((View v) ->{
             //https://stackoverflow.com/questions/30752547/listener-can-be-replaced-with-lambda
             String serviceComment = serviceCommentID.getText().toString();
-            Toast.makeText(getActivity(), "Saved comment: \n" + serviceComment, Toast.LENGTH_SHORT).show();
+            String clientSignature = clientSignatureID.getText().toString();
+            Toast.makeText(getActivity(), "Client: " + clientSignature + "\nSaved comment: \n" + serviceComment, Toast.LENGTH_SHORT).show();
         });
 
         return view;
