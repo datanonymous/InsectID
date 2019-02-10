@@ -2,11 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="ko.alex.insectid.Tab1Fragment">
 
-    <TextView
-        android:id="@+id/textView2"
+    <CalendarView
+        android:id="@+id/calendarView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="frag2"
-        tools:layout_editor_absoluteX="176dp"
-        tools:layout_editor_absoluteY="356dp" />
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="376dp" />
 </android.support.constraint.ConstraintLayout>
