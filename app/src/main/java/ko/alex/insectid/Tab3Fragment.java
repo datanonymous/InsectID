@@ -61,6 +61,14 @@ public class Tab3Fragment extends Fragment {
             String serviceComment = serviceCommentID.getText().toString();
             Toast.makeText(getActivity(), "Saved comment: \n" + serviceComment, Toast.LENGTH_SHORT).show();
         });
+        //Other way of using onClickListener
+        //https://stackoverflow.com/questions/30752547/listener-can-be-replaced-with-lambda
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(getApplicationContext(), "asdfasdf", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         return view;
     }
