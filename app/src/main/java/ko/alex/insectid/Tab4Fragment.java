@@ -75,7 +75,7 @@ public class Tab4Fragment extends Fragment {
                 //https://stackoverflow.com/questions/43364776/java-lang-illegalstateexception-could-not-find-method-in-a-parent-or-ancestor-c?rq=1
                 imageIDsIndex = (imageIDsIndex >= 9)?0:imageIDsIndex+1;
                 Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), imageIDs[imageIDsIndex]);
-                displayImageBitmap = Bitmap.createScaledBitmap(imageBitmap, 32, 32, true);
+                displayImageBitmap = Bitmap.createScaledBitmap(imageBitmap, 512, 512, true);
                 imageView.setImageBitmap(displayImageBitmap);
             }
         });
