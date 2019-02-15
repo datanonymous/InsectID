@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item
+        android:id="@+id/bluetooth"
+        android:icon="@drawable/baseline_bluetooth_white_18dp"
+        android:title="Bluetooth"
+        app:showAsAction="always" />
     <item android:id="@+id/identification"
     android:title="Insect ID"/>
-    <item android:id="@+id/bluetooth"
-        android:title="Bluetooth"/>
+
 
 </menu>
