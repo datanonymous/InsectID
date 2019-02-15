@@ -103,6 +103,9 @@ public class MainActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.identification){
             Intent intentID = new Intent(getApplicationContext(), IdentificationActivity.class);
             startActivity(intentID);
+        } else if(item.getItemId() == R.id.bluetooth){
+            Intent intentID = new Intent(getApplicationContext(), BluetoothActivity.class);
+            startActivity(intentID);
         }
         return super.onOptionsItemSelected(item);
     }
