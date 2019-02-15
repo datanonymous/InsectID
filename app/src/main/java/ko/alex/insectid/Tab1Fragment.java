@@ -18,6 +18,8 @@ import java.util.List;
  */
 public class Tab1Fragment extends Fragment {
 
+    //Working with RecyclerView
+    //https://www.androidhive.info/2016/01/android-working-with-recycler-view/
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recyclerViewAdapter;
     private List<Device> deviceList;
