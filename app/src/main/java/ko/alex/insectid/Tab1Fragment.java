@@ -1,17 +1,22 @@
 package ko.alex.insectid;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -43,7 +48,7 @@ public class Tab1Fragment extends Fragment {
 
         deviceList = new ArrayList<>();
         for(int index = 0; index < 11; index++){
-            Device myDevice = new Device("Device #: " + index, "Location #: " + index, "Date: " + index);
+            Device myDevice = new Device("Device #: " + index, "Location: " + index, "Date: " + index);
             deviceList.add(myDevice);
         }
         recyclerViewAdapter = new MyRecyclerViewAdapter(deviceList, getActivity());
@@ -53,9 +58,51 @@ public class Tab1Fragment extends Fragment {
         addDeviceFab.setOnClickListener((View v) ->{
             //https://stackoverflow.com/questions/30752547/listener-can-be-replaced-with-lambda
             Toast.makeText(getActivity(), "Add Device FAB clicked", Toast.LENGTH_SHORT).show();
+            startCustomAlertDialog();
         });
 
         return view;
+    }
+
+    public void startCustomAlertDialog(){
+        // https://www.youtube.com/watch?v=plnLs6aST1M
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()); // android.R.style.Theme_Black_NoTitleBar_Fullscreen or android.R.style.Theme_Light
+
+        builder.setTitle("Enter device information below:");
+
+        // Need subView because you are referencing the view in custom_alert_dialog.xml, not the main view
+        View subView = getLayoutInflater().inflate(R.layout.custom_alert_dialog,null);
+        final EditText deviceEdit = subView.findViewById(R.id.deviceEditText);
+        final EditText locationEdit = subView.findViewById(R.id.locationEditText);
+
+        builder.setPositiveButton("Sounds good!", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+
+                String deviceEditAlertDialog = deviceEdit.getText().toString();
+                String locationEditAlertDialog = locationEdit.getText().toString();
+
+                Toast.makeText(getActivity(), "Device number is: "+deviceEditAlertDialog+ "\nLocation is: "+locationEditAlertDialog, Toast.LENGTH_LONG).show();
+
+                SimpleDateFormat sdf = new SimpleDateFormat("MMM/dd/yyyy");
+                String date = sdf.format(new Date());
+
+                Device myDevice = new Device("Device #: " + deviceEditAlertDialog, "Location: " + locationEditAlertDialog, "Date: " + date);
+                deviceList.add(myDevice);
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                dialogInterface.dismiss(); // dialog.cancel() can also work
+            }
+        });
+
+        // For custom alert dialog
+        builder.setView(subView);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 }
