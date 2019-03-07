@@ -106,6 +106,9 @@ public class MainActivity extends AppCompatActivity {
         } else if(item.getItemId() == R.id.bluetooth){
             Intent intentID = new Intent(getApplicationContext(), BluetoothActivity.class);
             startActivity(intentID);
+        } else if(item.getItemId() == R.id.signature){
+            Intent intentID = new Intent(getApplicationContext(), SignatureActivity.class);
+            startActivity(intentID);
         }
         return super.onOptionsItemSelected(item);
     }

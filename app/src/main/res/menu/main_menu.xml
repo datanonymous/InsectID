@@ -9,6 +9,9 @@
         app:showAsAction="always" />
     <item android:id="@+id/identification"
     android:title="Insect ID"/>
+    <item
+        android:id="@+id/signature"
+        android:title="SIGNATURE" />
 
 
 </menu>
