@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">InsectID</string>
+    <string name="app_name">InsectID1</string>
 
     <string name="content_description">Image of an insect</string>
     <string name="next_button_text">Next Image</string>
