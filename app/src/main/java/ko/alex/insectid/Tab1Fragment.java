@@ -75,7 +75,6 @@ public class Tab1Fragment extends Fragment {
                 Toast.makeText(getActivity(), "Single Click on position: "+position,
                         Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onLongClick(View view, int position) {
                 Toast.makeText(getActivity(), "Long press on position: "+position,
