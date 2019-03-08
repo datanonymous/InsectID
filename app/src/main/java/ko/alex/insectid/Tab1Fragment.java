@@ -61,6 +61,33 @@ public class Tab1Fragment extends Fragment {
             startCustomAlertDialog();
         });
 
+
+
+
+        // figuring out how to click on individual elements in recyclerview
+        // https://medium.com/@harivigneshjayapalan/android-recyclerview-implementing-single-item-click-and-long-press-part-ii-b43ef8cb6ad8
+        // https://github.com/Hariofspades/CustomRecyclerView/blob/master/app/src/main/java/com/hariofspades/customrecyclerview/MainActivity.java
+        recyclerView.addOnItemTouchListener(new MainActivity.RecyclerTouchListener(getActivity(),
+                recyclerView, new MainActivity.ClickListener() {
+            @Override
+            public void onClick(View view, final int position) {
+                //Values are passing to activity & to fragment as well
+                Toast.makeText(getActivity(), "Single Click on position: "+position,
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                Toast.makeText(getActivity(), "Long press on position: "+position,
+                        Toast.LENGTH_LONG).show();
+                deviceList.remove(position);
+                recyclerViewAdapter.notifyDataSetChanged();
+            }
+        }));
+
+
+
+
         return view;
     }
 
@@ -91,19 +118,23 @@ public class Tab1Fragment extends Fragment {
                 deviceList.add(myDevice);
             }
         });
-
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 dialogInterface.dismiss(); // dialog.cancel() can also work
             }
         });
-
         // For custom alert dialog
         builder.setView(subView);
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+
+
+
+
+
 
 }
 
